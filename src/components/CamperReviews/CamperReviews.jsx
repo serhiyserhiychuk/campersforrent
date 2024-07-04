@@ -1,9 +1,9 @@
 import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
-import { getMovieReviewsById } from "../../movies-api";
+import { getCamperById } from "../../redux/campers/operations";
 import { useParams } from "react-router-dom";
 import Loader from "../Loader/Loader";
-import css from "./MovieReviews.module.css";
+import css from "./CamperReviews.module.css";
 
 export default function MovieReviews() {
   const [isLoading, setIsLoading] = useState(false);

@@ -1,13 +1,13 @@
 import toast from "react-hot-toast";
 import { useState, useEffect, useRef } from "react";
-import { getMovieDetailsById } from "../../movies-api";
+import { getMovieDetailsById } from "../../campers-api";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import { useLocation, useParams } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 
-export default function MovieDetailsPage() {
+export default function CamperDetailsPage() {
   const [isLoading, setIsLoading] = useState(false);
-  const { movieId } = useParams();
+  const { camperId } = useParams();
   const [response, setResponse] = useState([]);
 
   const location = useLocation();
@@ -17,7 +17,7 @@ export default function MovieDetailsPage() {
     async function getData() {
       try {
         setIsLoading(true);
-        const data = await getMovieDetailsById(movieId);
+        const data = await getMovieDetailsById(camperId);
         setResponse(data);
       } catch {
         () => {
@@ -28,7 +28,7 @@ export default function MovieDetailsPage() {
       }
     }
     getData();
-  }, [movieId]);
+  }, [camperId]);
 
   return (
     <>

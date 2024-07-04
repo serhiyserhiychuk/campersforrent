@@ -2,30 +2,47 @@ import { Toaster } from "react-hot-toast";
 import { Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 const HomePage = lazy(() => import("./pages/HomePage/HomePage"));
-const MoviesPage = lazy(() => import("./pages/MoviesPage/MoviesPage"));
-const MovieDetailsPage = lazy(() =>
-  import("./pages/MovieDetailsPage/MovieDetailsPage")
+const CatalogPage = lazy(() => import("./pages/CatalogPage/CatalogPage"));
+const CamperDetailsPage = lazy(() =>
+  import("./pages/CamperDetailsPage/CamperDetailsPage")
 );
-const NotFoundPage = lazy(() => import("./pages/NotFoundPage/NotFoundPage"));
+const FavoritesPage = lazy(() => import("./pages/FavoritesPage/FavoritesPage"));
 import Loader from "./components/Loader/Loader";
-import Navigation from "./components/Navigation/Navigation";
-import MovieCast from "./components/MovieCast/MovieCast";
-import MovieReviews from "./components/MovieReviews/MovieReviews";
+// import Navigation from "./components/Navigation/Navigation";
+import CamperFeatures from "./components/CamperFeatures/CamperFeatures";
+import CamperReviews from "./components/CamperReviews/CamperReviews";
 
 const App = () => {
   return (
     <>
       <Toaster />
-      <Navigation />
+      {/* <Navigation /> */}
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/movies" element={<MoviesPage />} />
-          <Route path="/movies/:movieId" element={<MovieDetailsPage />}>
-            <Route path="/movies/:movieId/cast" element={<MovieCast />} />
-            <Route path="/movies/:movieId/reviews" element={<MovieReviews />} />
+          <Route path="/catalog" element={<CatalogPage />} />
+          <Route path="/catalog/:camperId" element={<CamperDetailsPage />}>
+            <Route
+              path="/catalog/:camperId/features"
+              element={<CamperFeatures />}
+            />
+            <Route
+              path="/catalog/:camperId/reviews"
+              element={<CamperReviews />}
+            />
           </Route>
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/favorites/:camperId" element={<CamperDetailsPage />}>
+            <Route
+              path="/favorites/:camperId/features"
+              element={<CamperFeatures />}
+            />
+            <Route
+              path="/favorites/:camperId/reviews"
+              element={<CamperReviews />}
+            />
+          </Route>
+          <Route path="*" element={<HomePage />} />
         </Routes>
       </Suspense>
     </>

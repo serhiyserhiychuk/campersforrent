@@ -1,35 +1,31 @@
-import toast from "react-hot-toast";
-import { useState, useEffect } from "react";
-import { getTrendingMovies } from "../../movies-api";
+import svg from "../../../public/icons.svg";
 import css from "./HomePage.module.css";
-import MovieList from "../../components/MovieList/MovieList";
-import Loader from "../../components/Loader/Loader";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [response, setResponse] = useState([]);
-
-  useEffect(() => {
-    async function getData() {
-      try {
-        setIsLoading(true);
-        const data = await getTrendingMovies();
-        setResponse(data);
-      } catch {
-        () => {
-          toast.error("Something went wrong, try again!");
-        };
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    getData();
-  }, []);
+  const navigate = useNavigate();
   return (
-    <>
-      <div className={css.div}>Trending today</div>
-      {isLoading && <Loader />}
-      <MovieList movies={response} />
-    </>
+    <div className={css.div}>
+      <svg className={css.icon}>
+        <use href={svg + "#icon-camper"}></use>
+      </svg>
+      <h1 className={css.title}>
+        <span className={css.span}>C</span>ampers
+        <span className={css.span}>F</span>or
+        <span className={css.span}>R</span>ent
+      </h1>
+      <p className={css.text}>
+        Only best campers from all Ukraine especially for you! Wonderful
+        camping`s guaranteed!
+      </p>
+      <button
+        className={css.btn}
+        onClick={() => {
+          navigate("/catalog");
+        }}
+      >
+        Rent Now!
+      </button>
+    </div>
   );
 }
