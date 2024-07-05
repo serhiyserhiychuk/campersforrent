@@ -1,8 +1,26 @@
+.div {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  width: calc(100% - 428px);
+}
 .list {
   display: flex;
   flex-direction: column;
+  gap: 32px;
+  width: 100%;
 }
-.link {
-  font-size: 16px;
-  color: #000;
+.btn {
+  color: #101828;
+  background-color: #ffffff;
+  border-radius: 30px;
+  width: 144px;
+  height: 56px;
+  border: 1px solid rgba(16, 24, 40, 0.2);
+  margin-left: auto;
+  margin-right: auto;
+}
+.btn:hover,
+.btn:focus {
+  border-color: #e44848;
 }

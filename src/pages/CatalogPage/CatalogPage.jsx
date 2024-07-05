@@ -5,6 +5,7 @@ import { getAllCampers } from "../../redux/campers/operations";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCampers, selectLoading } from "../../redux/campers/selectors";
 import Loader from "../../components/Loader/Loader";
+import css from "./CatalogPage.module.css";
 
 export default function MoviesPage() {
   const [filters, setFilters] = useState({
@@ -31,10 +32,10 @@ export default function MoviesPage() {
   }, [dispatch]);
 
   return (
-    <>
+    <div className={css.div}>
       <FilterForm onSubmit={onSubmit} />
       {isLoading && <Loader />}
-      {filters && <CamperList campers={campers} />}
-    </>
+      {filters && <CamperList campers={campers} filters={filters} />}
+    </div>
   );
 }
