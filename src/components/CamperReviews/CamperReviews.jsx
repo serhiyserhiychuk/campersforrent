@@ -1,46 +1,44 @@
-import toast from "react-hot-toast";
-import { useState, useEffect } from "react";
-import { getCamperById } from "../../redux/campers/operations";
-import { useParams } from "react-router-dom";
-import Loader from "../Loader/Loader";
 import css from "./CamperReviews.module.css";
+import svg from "../../../public/icons.svg";
 
-export default function MovieReviews() {
-  const [isLoading, setIsLoading] = useState(false);
-  const { movieId } = useParams();
-  const [response, setResponse] = useState([]);
-
-  useEffect(() => {
-    async function getData() {
-      try {
-        setIsLoading(true);
-        const data = await getMovieReviewsById(movieId);
-        setResponse(data);
-      } catch {
-        () => {
-          toast.error("Something went wrong, try again!");
-        };
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    getData();
-  }, [movieId]);
+export default function CamperReviews({ camper }) {
   return (
     <>
-      {isLoading && <Loader />}
-      {response.length === 0 ? (
-        <div>We don`t have any reviews for this movie.</div>
+      {camper.reviews.length === 0 ? (
+        <p>We don`t have any reviews for this movie.</p>
       ) : (
         <ul className={css.list}>
-          {response.map((review) => {
-            return (
-              <li key={review.id}>
-                <h3>Author: {review.author}</h3>
-                <p>{review.content}</p>
-              </li>
-            );
-          })}
+          {camper.reviews.map((review, index) => (
+            <li className={css.item} key={index}>
+              <div className={css.ratingdiv}>
+                <span className={css.letter}>
+                  {review.reviewer_name[0].toUpperCase()}
+                </span>
+                <div>
+                  <h4>{review.reviewer_name}</h4>
+                  <ul className={css.starlist}>
+                    {[...Array(5)].map((_, index) => (
+                      <li key={index}>
+                        <svg
+                          key={index}
+                          className={
+                            index < review.reviewer_rating
+                              ? css.filledStar
+                              : css.emptyStar
+                          }
+                          width="20"
+                          height="20"
+                        >
+                          <use href={svg + "#icon-star"}></use>
+                        </svg>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <p className={css.text}>{review.comment}</p>
+            </li>
+          ))}
         </ul>
       )}
     </>

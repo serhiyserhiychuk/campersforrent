@@ -1,6 +1,21 @@
-.list {
-  margin-top: 40px;
+.div {
+  width: 430px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  flex-direction: column;
+  gap: 44px;
+}
+.list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: #101828;
+  font-weight: 500;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 2px solid rgba(16, 24, 40, 0.2);
+}
+.item {
+  display: flex;
+  justify-content: space-between;
 }

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllCampers, getCamperById } from "./operations";
+import { getAllCampers, getCamperById, updateCamperById } from "./operations";
 
 const camperSlice = createSlice({
   name: "campers",
@@ -29,9 +29,34 @@ const camperSlice = createSlice({
       })
       .addCase(getCamperById.fulfilled, (state, action) => {
         state.loading = false;
-        state.currentCamper = action.payload;
+        if (
+          state.currentCamper &&
+          state.currentCamper._id === action.payload._id
+        ) {
+          state.currentCamper = null;
+        } else {
+          state.currentCamper = action.payload;
+        }
       })
       .addCase(getCamperById.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      })
+      .addCase(updateCamperById.pending, (state) => {
+        state.error = null;
+        state.loading = true;
+      })
+      .addCase(updateCamperById.fulfilled, (state, action) => {
+        state.loading = false;
+        const camperIndex = state.items.findIndex(
+          (item) => item._id === action.payload._id
+        );
+        if (camperIndex !== -1) {
+          state.items[camperIndex] = action.payload;
+          state.currentCamper = action.payload;
+        }
+      })
+      .addCase(updateCamperById.rejected, (state) => {
         state.loading = false;
         state.error = true;
       }),

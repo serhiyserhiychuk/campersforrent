@@ -27,3 +27,17 @@ export const getCamperById = createAsyncThunk(
     }
   }
 );
+
+export const updateCamperById = createAsyncThunk(
+  "campers/updateCamperById",
+  async (data, thunkAPI) => {
+    try {
+      const response = await axios.put(`/${data.id}`, {
+        favorite: data.favorite,
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);

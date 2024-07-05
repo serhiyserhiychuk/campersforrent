@@ -1,41 +1,31 @@
 import css from "./CamperCard.module.css";
 import svg from "../../../public/icons.svg";
 import FeaturesList from "../FeaturesList/FeaturesList";
-import { getCamperById } from "../../redux/campers/operations";
+import { updateCamperById } from "../../redux/campers/operations";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
+import ShowMoreModal from "../../components/ShowMoreModal/ShowMoreModal";
 
 export default function CamperCard({ camper }) {
   const [iconClass, setIconClass] = useState(css.heart);
-  const [favorites, setFavorites] = useState(() => {
-    const savedFavorites = localStorage.getItem("favorites");
-    return savedFavorites ? JSON.parse(savedFavorites) : [];
-  });
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [favorites]);
+    setIconClass(camper.favorite ? css.clickedHeart : css.heart);
+  }, [camper]);
 
-  useEffect(() => {
-    const isFavorite = favorites.some((fav) => fav._id === camper._id);
-    setIconClass(isFavorite ? css.clickedHeart : css.heart);
-  }, [favorites, camper._id]);
-
-  const handleClick = async (id) => {
-    const favCamper = await dispatch(getCamperById(id));
-
-    setFavorites((prevFavorites) => {
-      console.log(prevFavorites);
-      if (!prevFavorites.some((fav) => fav._id === id)) {
-        return [...prevFavorites, favCamper.payload];
-      } else {
-        return prevFavorites.filter((fav) => fav._id !== id);
-      }
-    });
-
-    window.location.reload();
+  const handleClick = async (id, favorite) => {
+    await dispatch(updateCamperById({ id, favorite: !favorite }));
   };
 
   return (
@@ -49,7 +39,7 @@ export default function CamperCard({ camper }) {
             <button
               className={css.heartbtn}
               type="button"
-              onClick={() => handleClick(camper._id)}
+              onClick={() => handleClick(camper._id, camper.favorite)}
             >
               <svg className={iconClass}>
                 <use href={svg + "#icon-heart"}></use>
@@ -75,8 +65,13 @@ export default function CamperCard({ camper }) {
         </div>
         <p className={css.text}>{`${camper.description.slice(0, 70)}...`}</p>
         <FeaturesList camper={camper} number={4} />
-        <button className={css.btn}>Show more</button>
+        <button className={css.btn} onClick={openModal}>
+          Show more
+        </button>
       </div>
+      {isOpen && (
+        <ShowMoreModal camper={camper} isOpen={isOpen} onClose={closeModal} />
+      )}
     </li>
   );
 }

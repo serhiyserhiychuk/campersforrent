@@ -1,27 +1,29 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getCamperById } from "../../redux/campers/operations";
-import { useParams } from "react-router-dom";
-import Loader from "../Loader/Loader";
-// import css from "./CamperFeatures.module.css";
-import {
-  selectCurrentCamper,
-  selectLoading,
-} from "../../redux/campers/selectors";
+import css from "./CamperFeatures.module.css";
+import FeaturesList from "../FeaturesList/FeaturesList";
 
-export default function MovieCast() {
-  const dispatch = useDispatch();
-  const isLoading = useSelector(selectLoading);
-  const currentCamper = useSelector(selectCurrentCamper);
-  const { camperId } = useParams();
-
-  useEffect(() => {
-    dispatch(getCamperById);
-  }, [camperId, dispatch]);
+export default function CamperFeatures({ camper }) {
+  const details = {
+    Form: camper.form,
+    Length: camper.length,
+    Width: camper.width,
+    Height: camper.height,
+    Tank: camper.tank,
+    Consumption: camper.consumption,
+  };
   return (
-    <>
-      {isLoading && <Loader />}
-      <p>{currentCamper.name}</p>
-    </>
+    <div className={css.div}>
+      <FeaturesList camper={camper} number={-1} />
+      <div>
+        <h3>Vehicle details</h3>
+        <ul className={css.list}>
+          {Object.entries(details).map(([key, value]) => (
+            <li className={css.item} key={key}>
+              <p>{key}</p>
+              <p>{value}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 }

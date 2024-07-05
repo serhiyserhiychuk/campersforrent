@@ -41,6 +41,6 @@ export default function CamperList({ campers, filters }) {
       )}
     </div>
   ) : (
-    <p>There are no campers with such properties</p>
+    <p className={css.text}>There are no campers with such properties</p>
   );
 }
